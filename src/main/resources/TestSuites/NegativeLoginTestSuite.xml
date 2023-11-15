@@ -1,0 +1,61 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="NegativeLoginTestSuite" verbose="1" parallel="tests" thread-count="4">
+
+    <test name="NegativeUsernameTests-CH">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="username" value="incorrect"/>
+        <parameter name="password" value="SuperSecretPassword!"/>
+        <parameter name="expectedMessage" value="Your username is invalid!"/>
+        <classes>
+            <class name="com.herokuapp.theinternet.loginpagetests.NegativeLoginTests">
+                <methods>
+                    <include name="incorrectUsernameTest"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="NegativeUsernameTests-FF">
+        <parameter name="browser" value="firefox"/>
+        <parameter name="username" value="incorrect"/>
+        <parameter name="password" value="SuperSecretPassword!"/>
+        <parameter name="expectedMessage" value="Your username is invalid!"/>
+        <classes>
+            <class name="com.herokuapp.theinternet.loginpagetests.NegativeLoginTests">
+                <methods>
+                    <include name="incorrectUsernameTest"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="NegativePasswordTests-CH">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="username" value="tomsmith"/>
+        <parameter name="password" value="IncorrectPassword!"/>
+        <parameter name="expectedMessage" value="Your password is invalid!"/>
+        <classes>
+            <class name="com.herokuapp.theinternet.loginpagetests.NegativeLoginTests">
+                <methods>
+                    <include name="incorrectPasswordTest"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="NegativePasswordTests-FF">
+        <parameter name="browser" value="firefox"/>
+        <parameter name="username" value="tomsmith"/>
+        <parameter name="password" value="IncorrectPassword!"/>
+        <parameter name="expectedMessage" value="Your password is invalid!"/>
+        <classes>
+            <class name="com.herokuapp.theinternet.loginpagetests.NegativeLoginTests">
+                <methods>
+                    <include name="incorrectPasswordTest"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>

@@ -23,6 +23,18 @@
             <version>4.13.0</version>
         </dependency>
 
+        <!-- https://logging.apache.org/log4j/2.x/maven-artifacts.html -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -46,7 +58,8 @@
 
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/main/resources/TestSuites/AllTests.xml</suiteXmlFile>
+                        <suiteXmlFile>src/main/resources/TestSuites/PositiveLoginTestSuite.xml</suiteXmlFile>
+                        <suiteXmlFile>src/main/resources/TestSuites/NegativeLoginTestSuite.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
 
