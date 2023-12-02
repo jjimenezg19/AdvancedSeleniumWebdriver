@@ -1,10 +1,12 @@
 package com.herokuapp.theinternet.loginpagetests;
 
 import com.herokuapp.theinternet.base.TestUtilities;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import com.herokuapp.theinternet.pages.LoginPageObject;
+import com.herokuapp.theinternet.pages.SecureAreaPageObject;
+import com.herokuapp.theinternet.pages.WelcomePageObject;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
 
 public class PositiveLoginTests extends TestUtilities {
 
@@ -13,38 +15,29 @@ public class PositiveLoginTests extends TestUtilities {
     public void positiveLoginTest(String username, String password, String expectedSuccessMessage) {
         log.info("Starting positiveLoginTest Tests with " + username + " " + password);
 
-        String url = "http://the-internet.herokuapp.com/login";
-        driver.get(url);
-        log.info("Page opened");
+        //Open main page
+        WelcomePageObject welcomePage = new WelcomePageObject(driver, log);
+        welcomePage.openPage();
 
-        //enter username
-        WebElement usernameElement = driver.findElement(By.id("username"));
-        usernameElement.sendKeys(username);
+        //Click on FormAuthentication link
+        LoginPageObject loginPageObject = welcomePage.clickFormAuthenticationlink();
 
-        //enter password
-        WebElement passwordElement = driver.findElement(By.id("password"));
-        passwordElement.sendKeys(password);
+        //Execute login
+        SecureAreaPageObject secureAreaPageObject = loginPageObject.logIn(username, password);
 
-        //click login button
-        WebElement loginButton = driver.findElement(By.tagName("button"));
-        loginButton.click();
-
-        //verifications:
+        //Verifications:
         //New url
-        String expectedUrl = "http://the-internet.herokuapp.com/secure";
-        String actualUrl = driver.getCurrentUrl();
-
-        Assert.assertEquals(actualUrl, expectedUrl, "Actual page url is not the same as expected");
+        Assert.assertEquals(secureAreaPageObject.getCurrentUrl(), secureAreaPageObject.getPageUrl());
 
         //logout button is visible
-        WebElement logOutButton = driver.findElement(By.xpath("//a[@class='button secondary radius']"));
-        Assert.assertTrue(logOutButton.isDisplayed(), "LogOut button is not visible");
+        Assert.assertTrue(secureAreaPageObject.isLogOutButtonVisible(), "LogOut button is not visible");
 
         //successful login message
-        WebElement successMessage = driver.findElement(By.id("flash"));
-        String actualMessage = successMessage.getText();
 
-        Assert.assertTrue(actualMessage.contains(expectedSuccessMessage), "Actual message does not contain expected.\nActual Message: " + actualMessage + "\nExpected Message: " + expectedSuccessMessage);
+        String actualMessage = secureAreaPageObject.getSuccessMessageTest();
+
+        Assert.assertTrue(actualMessage.contains(expectedSuccessMessage), "actualSuccessMessage does not contain expectedSuccessMessage\nexpectedSuccessMessage: "
+                + expectedSuccessMessage + "\nactualSuccessMessage: " + actualMessage);
 
     }
 

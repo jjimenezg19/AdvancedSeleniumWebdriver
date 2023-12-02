@@ -21,6 +21,21 @@ public class BasePageObject {
         this.log = log;
     }
 
+
+    /**
+     * Get URL of current page from browser
+     */
+    public String getCurrentUrl() {
+       return driver.getCurrentUrl();
+    }
+
+    /**
+     * Open page with given URL
+     */
+    protected void openUrl(String url) {
+        driver.get(url);
+    }
+
     /**
      * Find element using given locator
      */
@@ -44,26 +59,28 @@ public class BasePageObject {
         find(locator).sendKeys(text);
     }
 
-    private void waitFor(ExpectedCondition<WebElement> condition, Duration timeOutInSeconds) {
-        timeOutInSeconds = Duration.ofSeconds(3);
-        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+    /**
+     * Wait for specific ExpectedCondition for the given amount of time in seconds
+     */
+    private void waitFor(ExpectedCondition<WebElement> condition, Duration timeOut) {
+        timeOut = timeOut != null ? timeOut : Duration.ofSeconds(30);
+        WebDriverWait wait = new WebDriverWait(driver, timeOut);
         wait.until(condition);
     }
 
     /**
      * Wait for given number of seconds for element with given locator to be visible on the page
      */
-    protected void waitForVisibilityOf(By locator, Duration timeOutInSeconds) {
+    protected void waitForVisibilityOf(By locator, Duration... timeOut) {
         int attempts = 0;
         while (attempts < 2) {
             try {
-                waitFor(ExpectedConditions.visibilityOfElementLocated(locator), timeOutInSeconds);
-
+                waitFor(ExpectedConditions.visibilityOfElementLocated(locator), (timeOut.length > 0 ? timeOut[0] : null));
+                break;
             } catch (StaleElementReferenceException e) {
             }
             attempts++;
         }
     }
-
 
 }

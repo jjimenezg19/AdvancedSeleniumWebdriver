@@ -1,7 +1,9 @@
 package com.herokuapp.theinternet.loginpagetests;
 
-import com.herokuapp.theinternet.base.BaseTest;
 import com.herokuapp.theinternet.base.TestUtilities;
+import com.herokuapp.theinternet.pages.LoginPageObject;
+import com.herokuapp.theinternet.pages.UnsuccesfulLoginPageObject;
+import com.herokuapp.theinternet.pages.WelcomePageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -13,29 +15,22 @@ public class NegativeLoginTests extends TestUtilities {
     @Parameters({"username", "password", "expectedMessage"})
     @Test(priority = 2, groups = {"negativeTests", "smokeTests"})
     public void incorrectUsernameTest(String username, String password, String expectedErrorMessage) {
-        log.info("Starting incorrectPasswordTest Tests with " + username + " " + password);
+        log.info("Starting incorrectUsernameTest Tests with " + username + " " + password);
 
-        String url = "http://the-internet.herokuapp.com/login";
-        driver.get(url);
-        log.info("Page opened");
+        //Open main page
+        WelcomePageObject welcomePage = new WelcomePageObject(driver, log);
+        welcomePage.openPage();
 
-        //enter username
-        WebElement usernameElement = driver.findElement(By.id("username"));
-        usernameElement.sendKeys(username);
+        //Click on FormAuthentication link
+        LoginPageObject loginPageObject = welcomePage.clickFormAuthenticationlink();
 
-        //enter password
-        WebElement passwordElement = driver.findElement(By.id("password"));
-        passwordElement.sendKeys(password);
-
-        //click login button
-        WebElement loginButton = driver.findElement(By.xpath("//i[@class='fa fa-2x fa-sign-in']"));
-        loginButton.click();
+        //Execute login
+        UnsuccesfulLoginPageObject unsuccesfulLoginPageObject = loginPageObject.logInU(username, password);
 
         //verifications:
 
         //Unsuccessful login message
-        WebElement errorMessage = driver.findElement(By.id("flash"));
-        String actualErrorMessage = errorMessage.getText();
+        String actualErrorMessage = unsuccesfulLoginPageObject.getUnsuccesfulMessageTest();
 
         Assert.assertTrue(actualErrorMessage.contains(expectedErrorMessage),
                 "Actual error message does not contain expected. \nActual Message: "
@@ -49,27 +44,20 @@ public class NegativeLoginTests extends TestUtilities {
     public void incorrectPasswordTest(String username, String password, String expectedErrorMessage) {
         log.info("Starting incorrectPasswordTest Tests with " + username + " " + password);
 
-        String url = "http://the-internet.herokuapp.com/login";
-        driver.get(url);
-        log.info("Page opened");
+        //Open main page
+        WelcomePageObject welcomePage = new WelcomePageObject(driver, log);
+        welcomePage.openPage();
 
-        //enter username
-        WebElement usernameElement = driver.findElement(By.id("username"));
-        usernameElement.sendKeys(username);
+        //Click on FormAuthentication link
+        LoginPageObject loginPageObject = welcomePage.clickFormAuthenticationlink();
 
-        //enter password
-        WebElement passwordElement = driver.findElement(By.id("password"));
-        passwordElement.sendKeys(password);
-
-        //click login button
-        WebElement loginButton = driver.findElement(By.xpath("//i[@class='fa fa-2x fa-sign-in']"));
-        loginButton.click();
+        //Execute login
+        UnsuccesfulLoginPageObject unsuccesfulLoginPageObject = loginPageObject.logInU(username, password);
 
         //verifications:
 
         //Unsuccessful login message
-        WebElement errorMessage = driver.findElement(By.id("flash"));
-        String actualErrorMessage = errorMessage.getText();
+        String actualErrorMessage = unsuccesfulLoginPageObject.getUnsuccesfulMessageTest();
 
         Assert.assertTrue(actualErrorMessage.contains(expectedErrorMessage),
                 "Actual error message does not contain expected. \nActual Message: "
